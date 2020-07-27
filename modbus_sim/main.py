@@ -36,7 +36,7 @@ def simu_factory(simu):
     try:
         simu.run()
     except Exception as e:
-        print e
+        print(e)
         raise
 
 
@@ -131,7 +131,7 @@ class ModbusServer(object):
         # data = []
         for slave_to_add in slaves:
             self.modbus_device.add_slave(slave_to_add)
-            for block_name, block_type in BLOCK_TYPES.items():
+            for block_name, block_type in list(BLOCK_TYPES.items()):
                 block_start = server.get(block_name, modbus_settings.get(block_name, {})).get("block_start",
                                                                                               DEFAULT_BLOCK_START)
                 block_size = server.get(block_name, modbus_settings.get(block_name, {})).get("block_size",
@@ -207,12 +207,12 @@ class ModbusServer(object):
         # self.data_map[self.active_slave][current_tab]['dirty'] = False
         _data = self.data_map[self.active_slave][current_tab]
         item_strings = _data['item_strings']
-        for i in xrange(int(self.data_count.text)):
+        for i in range(int(self.data_count.text)):
             if len(item_strings) < self.block_size:
                 updated_data, item_strings = ct.content.add_data(1, item_strings)
                 _data['data'].update(updated_data)
                 _data['item_strings'] = item_strings
-                for k, v in updated_data.iteritems():
+                for k, v in updated_data.items():
                     self.modbus_device.set_values(int(self.active_slave),
                                                   current_tab, k, v)
             else:
@@ -230,7 +230,7 @@ class ModbusServer(object):
         try:
             _data = self.data_map[self.active_slave][current_tab]
             _data['data'].update(data)
-            for k, v in data.iteritems():
+            for k, v in data.items():
                 self.modbus_device.set_values(int(self.active_slave),
                                               current_tab, k, int(v))
         except KeyError:
@@ -285,7 +285,7 @@ class ModbusServer(object):
         self.modbus_device.add_block(slave_id, blockname,
                                      BLOCK_TYPES[blockname], 0,
                                      self.block_size)
-        for k, v in new_data.iteritems():
+        for k, v in new_data.items():
             self.modbus_device.set_values(slave_id, blockname, k, int(v))
 
     def change_simulation_settings(self, **kwargs):
@@ -332,9 +332,9 @@ class ModbusServer(object):
         if not self.simulating:
             if self.active_slave:
                 _data_map = self.data_map[self.active_slave]
-                for block_name, value in _data_map.items():
+                for block_name, value in list(_data_map.items()):
                     updated = {}
-                    for k, v in value['data'].items():
+                    for k, v in list(value['data'].items()):
                         actual_data = self.modbus_device.get_values(
                             int(self.active_slave),
                             block_name,
@@ -414,13 +414,13 @@ class ModbusSimuApp(object):
                 for slave in slaves.split(","):
                     if ".." in slave:
                         start, end = slave.split("..")
-                        _range = range(int(start), int(end) + 1)
+                        _range = list(range(int(start), int(end) + 1))
                         _slaves.extend(_range)
 
                     else:
                         _slaves.append(int(slave))
             except (TypeError, ValueError):
-                print "Invalid range encountered"
+                print("Invalid range encountered")
 
             return _slaves
 
@@ -462,7 +462,7 @@ def main(title, args, unknown):
                      "file_log_path": args.log_file, "file_log_level": args.file_log_level}
 
     log_overrides = {k: v if v is not None else getattr(simu_cfg.logging.simulation, k)
-                     for k, v in log_overrides.items()}
+                     for k, v in list(log_overrides.items())}
     setup_loggers(simu_cfg.logging.modbus_tk, Namespace(log_overrides))
     simu_logger = get_logger("modbus_simu")
     app = ModbusSimuApp(simu_logger)

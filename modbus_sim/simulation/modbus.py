@@ -2,7 +2,7 @@
 Copyright (c) 2016 Riptide IO, Inc. All Rights Reserved.
 
 """
-from __future__ import absolute_import, unicode_literals
+
 
 
 import serial
@@ -22,7 +22,7 @@ ADDRESS_RANGE = {
 }
 import struct
 
-REGISTER_QUERY_FIELDS = {"bit": range(0, 16),
+REGISTER_QUERY_FIELDS = {"bit": list(range(0, 16)),
                          "byteorder": ["big", "little"],
                          "formatter": ["default", "float1"],
                          "scaledivisor": 1,
@@ -89,7 +89,7 @@ class ModbusSimu(object):
             tty_name = kwargs['port']
             kwargs.pop('port', None)
             self._serial = PseudoSerial(tty_name, **kwargs)
-            kwargs = {k: v for k, v in kwargs.iteritems() if k == "serial"}
+            kwargs = {k: v for k, v in kwargs.items() if k == "serial"}
             kwargs['serial'] = self._serial.ser
         else:
             kwargs['port'] = int(kwargs['port'])

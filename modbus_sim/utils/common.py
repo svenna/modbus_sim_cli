@@ -2,8 +2,8 @@
 Copyright (c) 2016 Riptide IO, Inc. All Rights Reserved.
 
 """
-from __future__ import unicode_literals
-from __future__ import absolute_import
+
+
 
 import os
 import json
@@ -149,7 +149,7 @@ def json_dump(contents, name=None, indent=4, as_list=False, default=repr):
         return repr_data
     else:
         for line in repr_data:
-            print line
+            print(line)
 
 
 class ValueStore(object):
@@ -170,9 +170,9 @@ class ValueStore(object):
         return self.__class__(**self.to_dict())
 
     def pprint(self):
-        print self.to_json()
+        print(self.to_json())
 
     def __repr__(self):
-        items = self.__dict__.items()
+        items = list(self.__dict__.items())
         elems = ["%s=%s" % (k, v) for k, v in items if v is not None]
         return "%s(%s)" % (self.__class__.__name__, ", ".join(elems))

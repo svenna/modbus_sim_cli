@@ -3,8 +3,8 @@ Copyright (c) 2016 Riptide IO, Inc. All Rights Reserved.
 
 """
 
-from __future__ import unicode_literals
-from __future__ import absolute_import
+
+
 
 import logging
 import json
@@ -51,7 +51,7 @@ class Namespace(object):
             if op == "get":
                 return obj.__dict__[part]
             if op == "has":
-                if part in obj.__dict__.keys():
+                if part in list(obj.__dict__.keys()):
                     return True
                 else:
                     return False
@@ -128,10 +128,10 @@ class Namespace(object):
         )
 
     def keys(self):
-        return self.__dict__.keys()
+        return list(self.__dict__.keys())
 
     def pprint(self):
-        print self.dump()
+        print(self.dump())
 
     def new(self, *args, **kwargs):
         return self.__class__(*args, **kwargs)
