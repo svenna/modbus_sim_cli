@@ -13,7 +13,7 @@ class YamlConfigParser(object):
     def read(config_file):
         config = dict()
         with open(config_file) as conffile:
-            config = yaml.load(conffile.read())
+            config = yaml.load(conffile.read(), Loader=yaml.SafeLoader)
         return config
 
     @staticmethod

@@ -6,12 +6,9 @@ Modbus Simu App
 """
 
 
-try:
-    import asyncio
-except ImportError:
-    import trollius as asyncio
-
+import asyncio
 import signal
+
 from modbus_sim.utils.config_parser import YamlConfigParser
 from modbus_sim.utils.namespace import Namespace
 from modbus_sim.utils.common import path
